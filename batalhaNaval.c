@@ -17,17 +17,17 @@ void imprimeMatriz(int matriz[LINHA][COLUNA]){
     printf("-----------------------\n");
 }
 
-void navioVertical(int matriz[LINHA][COLUNA]){
-    int i;
+void navioVertical(int linha, int coluna, int matriz[LINHA][COLUNA]){
+int i;
     for (i = 0; i < 3; i++){
-        matriz[i+5][7] = 3;
+        matriz[i + linha][coluna] = 3;
     }
 }
 
-void navioHorizontal(int matriz[LINHA][COLUNA]){
+void navioHorizontal(int linha, int coluna, int matriz[LINHA][COLUNA]){
     int i;
     for (i = 0; i < 3; i++){
-        matriz[2][i+3] = 3;
+        matriz[linha][i + coluna] = 3;
     }
 }
 
@@ -40,10 +40,10 @@ int main() {
     printf("\n");
     
     // Posiciona Navio 1 - horizontal
-    navioHorizontal(matriz);
+    navioHorizontal(2, 3, matriz);
 
     // Posiciona Navio 2  - vertical
-    navioVertical(matriz);
+    navioVertical(4, 7, matriz);
        
     // Imprime matriz com navios posicionados
     imprimeMatriz(matriz);
