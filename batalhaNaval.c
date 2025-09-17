@@ -1,11 +1,12 @@
 #include <stdio.h>
 
-void imprimeMatriz(int matriz[10][10]){
+#define LINHA 10
+#define COLUNA 10
+
+void imprimeMatriz(int matriz[LINHA][COLUNA]){
     int i,j;
-    printf("-----------------------\n");
-    printf("     Batalha Naval\n");
-    printf("-----------------------\n");
-    printf("    A B C D E F G H I J\n");
+    printf("-----------------------\n     Batalha Naval\n-----------------------\n");
+    printf(" X  A B C D E F G H I J\n");
     for (i = 0; i < 10; i++){
         printf("%2d  ",i+1);
         for (j = 0; j < 10; j++){
@@ -16,14 +17,14 @@ void imprimeMatriz(int matriz[10][10]){
     printf("-----------------------\n");
 }
 
-void navioVertical(int matriz[10][10]){
+void navioVertical(int matriz[LINHA][COLUNA]){
     int i;
     for (i = 0; i < 3; i++){
         matriz[i+5][7] = 3;
     }
 }
 
-void navioHorizontal(int matriz[10][10]){
+void navioHorizontal(int matriz[LINHA][COLUNA]){
     int i;
     for (i = 0; i < 3; i++){
         matriz[2][i+3] = 3;
@@ -31,7 +32,8 @@ void navioHorizontal(int matriz[10][10]){
 }
 
 int main() {
-    int matriz[10][10]={0};
+
+    int matriz[LINHA][COLUNA]={0};
 
     // Imprime matriz zerada
     imprimeMatriz(matriz);
