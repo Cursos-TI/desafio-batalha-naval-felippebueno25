@@ -19,13 +19,21 @@ void imprimeMatriz(char matriz[LINHA][COLUNA]){
 
 void navioVertical(int linha, int coluna, char matriz[LINHA][COLUNA]){
     int i;
+    if (matriz[linha + i][coluna] != '0') {
+        printf("Erro: Posicao (%d, %d) ja ocupada!\n", linha + i, coluna);
+        return;
+    }
     for (i = 0; i < 3; i++){
-        matriz[i + linha][coluna] = 'V';
+        matriz[linha + i][coluna] = 'V';
     }
 }
 
 void navioHorizontal(int linha, int coluna, char matriz[LINHA][COLUNA]){
     int i;
+    if (matriz[linha][coluna + i] != '0') {
+        printf("Erro: Posicao (%d, %d) ja ocupada!\n", linha, coluna + i);
+        return;
+    }
     for (i = 0; i < 3; i++){
         matriz[linha][coluna + i] = 'H';
     }
@@ -34,6 +42,10 @@ void navioHorizontal(int linha, int coluna, char matriz[LINHA][COLUNA]){
 void navioDiagonal(int linha, int coluna, char matriz[LINHA][COLUNA]){
     int i;
     for (i = 0; i < 3; i++){
+        if (matriz[linha + i][coluna + i] != '0') {
+            printf("Erro: Posicao (%d, %d) ja ocupada!\n", linha + i, coluna + i);
+            return;
+        }
         matriz[linha + i][coluna + i] = 'D';
     }
 }
@@ -59,6 +71,8 @@ int main() {
     navioVertical(4, 7, matriz);
 
     // Posiciona Navio 3 - diagonal
+    // Teste sobreposição
+    // navioDiagonal(4, 7, matriz);
     navioDiagonal(4, 2, matriz);
        
     // Imprime matriz com navios posicionados
