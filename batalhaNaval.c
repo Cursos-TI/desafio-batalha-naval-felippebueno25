@@ -2,52 +2,39 @@
 
 #define LINHA 10
 #define COLUNA 10
+#define HABL 5
+#define HABC 5
+#define SEPARADOR "-=-=-=-=-=-=-=-=-=-=-=-"
+int i, j;
 
-void imprimeMatriz(int matriz[LINHA][COLUNA]){
-    int i, j;
-    printf("-=-=-=-=-=-=-=-=-=-=-=-\n     Batalha Naval\n-=-=-=-=-=-=-=-=-=-=-=-\n");
+
+void imprimeMatrizWaves(int matriz[i][j]){
+    printf("%s\n     Batalha Naval      \n%s\n", SEPARADOR, SEPARADOR);
     printf(" X  A B C D E F G H I J\n");
     for (i = 0; i < 10; i++){
-        printf("%2d  ", i + 1);
-        for (j = 0; j < 10; j++){
-            if (matriz[i][j] == 0)
-                printf("0 ");
-            else
-                printf("%d ", matriz[i][j]);
-        }
-        printf("\n");
-    }
-    printf("-----------------------\n");
-}
-
-void imprimeMatrizWaves(int matriz[LINHA][COLUNA]){
-    int i, j;
-    printf("-=-=-=-=-=-=-=-=-=-=-=-\n     Batalha Naval\n-=-=-=-=-=-=-=-=-=-=-=-\n");
-    printf(" X  A B C D E F G H I J\n");
-    for (i = 0; i < 10; i++){
-        printf("%2d  ", i + 1);
-        for (j = 0; j < 10; j++){
-            if (matriz[i][j] == 0)
+        printf("%2d  ", i + 1); // Imprime número da linha
+        for (j = 0; j < 10; j++){ //    Imprime os elementos da linha
+            if (matriz[i][j] == 0) // Verifica se é água
                 printf("~ ");
             else
-                printf("%d ", matriz[i][j]);
+                printf("%d ", matriz[i][j]); // Imprime o valor do navio
         }
         printf("\n");
     }
-    printf("-----------------------\n");
+    printf("%s\n", SEPARADOR);
 }
 
 void navioVertical(int linha, int coluna, int matriz[LINHA][COLUNA]){
     int i;
     if (linha <= 7 && coluna <= 9) { // Verifica se o navio cabe na vertical
-        for (i = 0; i < 3; i++){
-            if (matriz[linha + i][coluna] != 0) {
+        for (i = 0; i < 3; i++){ 
+            if (matriz[linha + i][coluna] != 0) { // Verifica se a posição já está ocupada
                 printf("Erro: Posicao (%d, %d) ja ocupada!\n", linha + i, coluna);
                 return;
             }
         }
         for (i = 0; i < 3; i++){
-            matriz[linha + i][coluna] = 2;
+            matriz[linha + i][coluna] = 8; // Posiciona o navio
         }
     } else {
         printf("Erro: Navio nao cabe na posicao (%d, %d)!\n", linha, coluna);
@@ -64,7 +51,7 @@ void navioHorizontal(int linha, int coluna, int matriz[LINHA][COLUNA]){
             }
         }
         for (i = 0; i < 3; i++){
-            matriz[linha][coluna + i] = 1;
+            matriz[linha][coluna + i] = 8;
         }
     } else {
         printf("Erro: Navio nao cabe na posicao (%d, %d)!\n", linha, coluna);
@@ -81,7 +68,7 @@ void navioDiagonal(int linha, int coluna, int matriz[LINHA][COLUNA]){
             }
         }
         for (i = 0; i < 3; i++){
-            matriz[linha + i][coluna + i] = 3;
+            matriz[linha + i][coluna + i] = 8;
         }
     } else {
         printf("Erro: Navio nao cabe na posicao (%d, %d)!\n", linha, coluna);
@@ -99,9 +86,8 @@ int main() {
     }
 
     // Imprime matriz zerada
-    imprimeMatriz(matriz);
+    imprimeMatrizWaves(matriz);
     printf("\n");
-    
     // Posiciona Navio 1 - horizontal
     navioHorizontal(2, 3, matriz);
     
@@ -112,9 +98,17 @@ int main() {
     navioDiagonal(7, 2, matriz);
        
     // Imprime matriz com navios posicionados
-    imprimeMatriz(matriz);
-    // Com ondinhas fica legal ein :P
-    // imprimeMatrizWaves(matriz);
+    imprimeMatrizWaves(matriz);
+    
+
+    int hab[HABL][HABC];
+    // Inicializa matriz hab com 0 (vazio)
+    for (i = 0; i < HABL; i++){
+        for (j = 0; j < HABC; j++){
+            matriz[i][j] = 0;
+        }
+    }
+
 
     return 0;
 }
