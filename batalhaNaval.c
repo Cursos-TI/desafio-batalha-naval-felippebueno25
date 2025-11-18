@@ -1,23 +1,29 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define LINHA 10
 #define COLUNA 10
-#define HABL 5
+#define HABL 3
 #define HABC 5
-#define SEPARADOR "-=-=-=-=-=-=-=-=-=-=-=-"
+#define SEPARADOR "-=-=-=-=-=-=-=-=-=-=-=-="
 int i, j;
 
 
 void imprimeMatrizWaves(int matriz[i][j]){
+    // Imprime o cabeçalho da matriz
     printf("%s\n     Batalha Naval      \n%s\n", SEPARADOR, SEPARADOR);
-    printf(" X  A B C D E F G H I J\n");
+    printf(" 0  A B C D E F G H I J\n");
     for (i = 0; i < 10; i++){
-        printf("%2d  ", i + 1); // Imprime número da linha
-        for (j = 0; j < 10; j++){ //    Imprime os elementos da linha
-            if (matriz[i][j] == 0) // Verifica se é água
+        // Imprime número da linha
+        printf("%2d  ", i + 1);
+        // Imprime os elementos da linha
+        for (j = 0; j < 10; j++){
+            // Verifica se é água
+            if (matriz[i][j] == 0)
                 printf("~ ");
             else
-                printf("%d ", matriz[i][j]); // Imprime o valor do navio
+                // Imprime o valor do navio
+                printf("%d ", matriz[i][j]);
         }
         printf("\n");
     }
@@ -26,15 +32,18 @@ void imprimeMatrizWaves(int matriz[i][j]){
 
 void navioVertical(int linha, int coluna, int matriz[LINHA][COLUNA]){
     int i;
-    if (linha <= 7 && coluna <= 9) { // Verifica se o navio cabe na vertical
+    // Verifica se o navio cabe na vertical
+    if (linha <= 7 && coluna <= 9) {
         for (i = 0; i < 3; i++){ 
-            if (matriz[linha + i][coluna] != 0) { // Verifica se a posição já está ocupada
+            // Verifica se a posição já está ocupada
+            if (matriz[linha + i][coluna] != 0) {
                 printf("Erro: Posicao (%d, %d) ja ocupada!\n", linha + i, coluna);
                 return;
             }
         }
         for (i = 0; i < 3; i++){
-            matriz[linha + i][coluna] = 8; // Posiciona o navio
+            // Posiciona uma parte do navio
+            matriz[linha + i][coluna] = 6; 
         }
     } else {
         printf("Erro: Navio nao cabe na posicao (%d, %d)!\n", linha, coluna);
@@ -43,15 +52,17 @@ void navioVertical(int linha, int coluna, int matriz[LINHA][COLUNA]){
 
 void navioHorizontal(int linha, int coluna, int matriz[LINHA][COLUNA]){
     int i;
-    if (linha <= 9 && coluna <= 7) { // Verifica se o navio cabe na horizontal
+    // Verifica se o navio cabe na horizontal
+    if (linha <= 9 && coluna <= 7) {
         for (i = 0; i < 3; i++){
+            // Verifica se a posição já está ocupada
             if (matriz[linha][coluna + i] != 0) {
                 printf("Erro: Posicao (%d, %d) ja ocupada!\n", linha, coluna + i);
                 return;
             }
         }
         for (i = 0; i < 3; i++){
-            matriz[linha][coluna + i] = 8;
+            matriz[linha][coluna + i] = 6;
         }
     } else {
         printf("Erro: Navio nao cabe na posicao (%d, %d)!\n", linha, coluna);
@@ -68,16 +79,74 @@ void navioDiagonal(int linha, int coluna, int matriz[LINHA][COLUNA]){
             }
         }
         for (i = 0; i < 3; i++){
-            matriz[linha + i][coluna + i] = 8;
+            matriz[linha + i][coluna + i] = 6;
         }
     } else {
         printf("Erro: Navio nao cabe na posicao (%d, %d)!\n", linha, coluna);
     }
 }
 
+void habCone(int linha, int coluna, int matriz[LINHA][COLUNA]){
+    int i, j;
+    // Verifica se a habilidade cabe na matriz
+    if (linha > 7 || coluna > 5) {
+        printf("Erro: Navio nao cabe na posicao (%d, %d)!\n", linha, coluna); 
+    } else {
+        for (i = 0; i < 3; i++){
+            for (j = 0; j < 5; j++){
+                // Verifica se está dentro do cone
+                if (i >= abs(j - 2)) {
+                    matriz[linha + i][coluna + j] = 9; 
+                } else {
+                    matriz[linha + i][coluna + j] = 0; 
+                }
+            }
+        }     
+    }
+}
+
+void habCruz(int linha, int coluna, int matriz[LINHA][COLUNA]){
+    int i, j;
+    // Verifica se a habilidade cabe na matriz
+    if (linha > 7 || coluna > 5) {
+        printf("Erro: Navio nao cabe na posicao (%d, %d)!\n", linha, coluna); 
+    } else {
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 5; j++) {
+            // Verifica se está na linha ou coluna do meio
+            if (i == 1 || j == 2) {
+                matriz[linha + i][coluna + j] = 9; 
+            } else {
+                matriz[linha + i][coluna + j] = 0; 
+            }
+        }
+    }
+    }
+}
+
+void habOcta(int linha, int coluna, int matriz[LINHA][COLUNA]){
+    int i, j;
+    // Verifica se a habilidade cabe na matriz
+    if (linha > 7 || coluna > 5) {
+        printf("Erro: Navio nao cabe na posicao (%d, %d)!\n", linha, coluna); 
+    } else {
+    for (i = 0; i < 3; i++) {
+        for (j = 0; j < 5; j++) {
+            // Verifica se está na linha ou coluna do meio
+            if ((j == 2) || (i == 1 && j >= 1 && j <= 3)) {
+                matriz[linha + i][coluna + j] = 9; 
+            } else {
+                matriz[linha + i][coluna + j] = 0; 
+            }
+        }
+    }
+    }
+}
+
 int main() {
     int matriz[LINHA][COLUNA];
     int i, j;
+    
     // Inicializa matriz com 0 (vazio)
     for (i = 0; i < LINHA; i++) {
         for (j = 0; j < COLUNA; j++) {
@@ -88,27 +157,27 @@ int main() {
     // Imprime matriz zerada
     imprimeMatrizWaves(matriz);
     printf("\n");
+    
     // Posiciona Navio 1 - horizontal
-    navioHorizontal(2, 3, matriz);
+    navioHorizontal(0, 0, matriz);
     
     // Posiciona Navio 2  - vertical
-    navioVertical(4, 7, matriz);
+    navioVertical(0, 9, matriz);
 
     // Posiciona Navio 3 - diagonal
-    navioDiagonal(7, 2, matriz);
+    navioDiagonal(2, 1, matriz);
+
+    // Posiciona Navio 4 - cone
+    habCone(1, 4, matriz);
+
+    // Habilidade Cruz
+    habCruz(5, 5, matriz);
+
+    // Habilidade Octa
+    habOcta(7, 0, matriz);
        
     // Imprime matriz com navios posicionados
     imprimeMatrizWaves(matriz);
-    
-
-    int hab[HABL][HABC];
-    // Inicializa matriz hab com 0 (vazio)
-    for (i = 0; i < HABL; i++){
-        for (j = 0; j < HABC; j++){
-            matriz[i][j] = 0;
-        }
-    }
-
 
     return 0;
 }
